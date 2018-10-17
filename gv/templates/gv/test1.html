@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<style>
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+  
+  path.line {
+    fill: none;
+    stroke-width: 1px;
+    pointer-events: none;
+  }
+</style>
+
+<body>
+    <div>ff</div>
+
+  <script>
+  
+  data = [20, 30, 40]
+    var margin = {
+      top: 40,
+      right: 40,
+      bottom: 50,
+      left: 60
+    }
+    var width = 900 - margin.left - margin.right;
+    var height = 450 - margin.top - margin.bottom;
+ 
+
+   /* var svg = d3.select("body").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");*/
+
+    function render(dataToRender) {
+        console.log("----------------");
+        var selector = d3.select('body')
+        .selectAll('div')
+        .data(dataToRender);
+        var entering = selector.enter();
+        entering.append('div')
+        .text(function(d) { console.log(d); return d; });
+        selector.text(function(d) { return d; });
+        var exiting = selector.exit();
+        exiting.remove(function(d) {console.log("ppp"); return true;});
+}
+
+render([10]);
+render([10, 20])
+render([30])
+              
+    function updateRect(mydata) {
+        svg.selectAll("g")
+        .data(mydata)
+        .enter()
+        .append("rect")
+        .attr("x", 0)
+        .attr("y", function(d) {return d;})
+        .attr("width", function(d) {return d})
+        .attr("height", 5)
+        .style("fill", "red")
+        .attr("d", function(d) {return d;});
+    }
+
+
+ 
+  </script>
+</body>
+</html>
