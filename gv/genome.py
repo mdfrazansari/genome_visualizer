@@ -55,3 +55,5 @@ class VCF():
         
     def getVariation(self, chromosome_name):
         return self.dataFrame.POS[self.dataFrame.CHROM == chromosome_name]
+
+

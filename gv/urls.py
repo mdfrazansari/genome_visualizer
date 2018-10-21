@@ -14,9 +14,16 @@ from . import views
 urlpatterns = [
 #-----------start---------------
     path('cv1', views.cv1, name='cv1'),
+    path('getPQArmData', views.getPQArmData, name='getPQArmData'),
+    path('getVariationData', views.getVariationData, name='getVariationData'),
+    path('getCytoBand/<str:chrom>', views.getCytoBand, name='getCytoBand'),
+    path('getPQArmData/<str:chrom>', views.getPQArmDataChrom, name='getPQArmDataChrom'),
+
+    path('cv2/<str:chrom>', views.cv2, name='cv2'),
+    path('cv2test', views.cv2test, name='cv2test'),
 
 
-#----------end------------------               
+#----------end------------------         
                
                
                
