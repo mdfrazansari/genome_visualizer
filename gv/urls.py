@@ -16,10 +16,12 @@ urlpatterns = [
     path('cv1', views.cv1, name='cv1'),
     path('getPQArmData', views.getPQArmData, name='getPQArmData'),
     path('getVariationData', views.getVariationData, name='getVariationData'),
+    path('getVariationAllDetails/<str:chrom>', views.getVariationAllDetails, name='getVariationAllDetails'),
     path('getCytoBand/<str:chrom>', views.getCytoBand, name='getCytoBand'),
     path('getPQArmData/<str:chrom>', views.getPQArmDataChrom, name='getPQArmDataChrom'),
 
     path('cv2/<str:chrom>', views.cv2, name='cv2'),
+    path('cv3/<str:chrom>', views.cv3, name='cv3'),
     path('cv2test', views.cv2test, name='cv2test'),
 
 

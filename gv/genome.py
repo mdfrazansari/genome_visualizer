@@ -48,12 +48,29 @@ class VCF():
     
     def __init__(self, fileName):
         self.vcfFileName = fileName;
-        self.dataFrame = allel.vcf_to_dataframe(fileName, fields=['CHROM', 'POS', 'REF', 'ALT'], alt_number=1)
-    
+        # AVAILABLE FIELDS
+        # 'CHROM', 'POS', 'ID', 'REF', 'ALT_1', 'ALT_2', 'ALT_3', 'QUAL', 'PRO',
+#       'EPP_1', 'EPP_2', 'EPP_3', 'SRF', 'NS', 'AB_1', 'AB_2', 'AB_3',
+#       'NUMALT', 'SRR', 'RPPR', 'QA_1', 'QA_2', 'QA_3', 'RUN_1', 'RUN_2',
+#       'RUN_3', 'MQM_1', 'MQM_2', 'MQM_3', 'DPB', 'PAIREDR', 'SAR_1', 'SAR_2',
+#       'SAR_3', 'DPRA_1', 'DPRA_2', 'DPRA_3', 'BVAR', 'DP', 'RO', 'GTI',
+#       'ODDS', 'AC_1', 'AC_2', 'AC_3', 'AF_1', 'AF_2', 'AF_3', 'PAO_1',
+#       'PAO_2', 'PAO_3', 'PAIRED_1', 'PAIRED_2', 'PAIRED_3', 'CIGAR_1',
+#       'CIGAR_2', 'CIGAR_3', 'PQR', 'AO_1', 'AO_2', 'AO_3', 'LEN_1', 'LEN_2',
+#       'LEN_3', 'SRP', 'ABP_1', 'ABP_2', 'ABP_3', 'RPP_1', 'RPP_2', 'RPP_3',
+#       'MEANALT_1', 'MEANALT_2', 'MEANALT_3', 'AN', 'MQMR', 'QR', 'SAP_1',
+#       'SAP_2', 'SAP_3', 'PQA_1', 'PQA_2', 'PQA_3', 'TYPE_1', 'TYPE_2',
+#       'TYPE_3', 'EPPR', 'SAF_1', 'SAF_2', 'SAF_3', 'FILTER_PASS', 'numalt',
+#       'svlen_1', 'svlen_2', 'svlen_3', 'is_snp'
+        self.dataFrame = allel.vcf_to_dataframe(fileName, fields='*')
+        
     def getFileName(self):
         return self.vcfFileName
         
     def getVariation(self, chromosome_name):
         return self.dataFrame.POS[self.dataFrame.CHROM == chromosome_name]
+
+    def getVariationAllDetails(self, chromosome_name):
+        return self.dataFrame[self.dataFrame.CHROM == chromosome_name]
 
 
