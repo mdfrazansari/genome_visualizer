@@ -19,6 +19,7 @@ urlpatterns = [
     path('getVariationAllDetails/<str:chrom>', views.getVariationAllDetails, name='getVariationAllDetails'),
     path('getCytoBand/<str:chrom>', views.getCytoBand, name='getCytoBand'),
     path('getPQArmData/<str:chrom>', views.getPQArmDataChrom, name='getPQArmDataChrom'),
+    path('getCensusData/<str:chrom>', views.getCensusData, name='getCensusData'),
 
     path('cv2/<str:chrom>', views.cv2, name='cv2'),
     path('cv3/<str:chrom>', views.cv3, name='cv3'),

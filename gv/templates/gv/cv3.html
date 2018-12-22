@@ -111,17 +111,17 @@
                         <th data-field="ID">ID</th>
                         <th data-field="REF">REF</th>
                         <th data-field="ALT_1">ALT_1</th>
-                        <th data-field="ALT_2">ALT_2</th>
-                        <th data-field="ALT_3">ALT_3</th>
+                        <th data-field="ALT_2" data-visible='false'>ALT_2</th>
+                        <th data-field="ALT_3" data-visible='false'>ALT_3</th>
                         <th data-field="QUAL">QUAL</th>
                         <th data-field="PRO">PRO</th>
                         <th data-field="EPP_1">EPP_1</th>
-                        <th data-field="EPP_2">EPP_2</th>
-                        <th data-field="EPP_3">EPP_3</th>
+                        <th data-field="EPP_2" data-visible='false'>EPP_2</th>
+                        <th data-field="EPP_3" data-visible='false'>EPP_3</th>
                         <th data-field="SRF">SRF</th>
                         <th data-field="AB_1">AB_1</th>
-                        <th data-field="AB_2">AB_2</th>
-                        <th data-field="AB_3">AB_3</th>
+                        <th data-field="AB_2" data-visible='false'>AB_2</th>
+                        <th data-field="AB_3" data-visible='false'>AB_3</th>
                         <th data-field="NUMALT">NUMALT</th>
                         <th data-field="SRR">SRR</th>
                         <th data-field="RPPR">RPPR</th>
@@ -403,6 +403,23 @@ class GenomeSlider {
           .on("mousedown touchstart", null); // Recenter before brushing.
     }
 
+    renderCensus(censusData) {
+        this.cd = censusData;
+        var census_g = this.g.append("g").attr('class', "census");
+        var x = this.x;
+        var y = this.y;
+        var census_bands = census_g.selectAll("rect")
+              .data(this.cd)
+              .enter()
+              .append("rect")
+              .attr("class", "bar")
+              .attr("x",  function(d) { return x(d["Genome Location"].split(":")[1].split("-")[0])})
+              .attr("y", function(d, i) { var chrom = "chr" + d["Genome Location"].split(":")[0]; return y(chrom) + y.bandwidth()/4; })
+              .attr("height", function(d, i) {return  y.bandwidth()/2; })
+              .attr("width", function(d) {return x(d["Genome Location"].split(":")[1].split("-")[1]) - x(d["Genome Location"].split(":")[1].split("-")[0]);})
+              .attr("fill", "cyan");
+    }
+
     addChildLevel() {
         this.gs = new GenomeSlider(this.container, this.idSuffix+1)
         if(this.idSuffix != 1) {
@@ -413,6 +430,7 @@ class GenomeSlider {
             this.gs.setYDomain(this.y.domain());
             this.gs.renderCytoBand(this.cbd);
             this.gs.renderVariations(this.vd);
+            this.gs.renderCensus(this.cd);
         }
     }
 
@@ -423,6 +441,7 @@ class GenomeSlider {
             this.gs.setYDomain(this.y.domain());
             this.gs.renderCytoBand(this.cbd);
             this.gs.renderVariations(this.vd);
+            this.gs.renderCensus(this.cd);
             //this.gs.renderPQBand(this.pqd);
         } else {
             var selection = d3.event.selection.map(this.x.invert, this.x)
@@ -480,7 +499,25 @@ class GenomeSlider {
                     });
 
         cytoBandDataPromise.then(
-            result => {gs.renderCytoBand(result); loadVariationData()},
+            result => {gs.renderCytoBand(result); loadCensusData()},
+            error => alert(error)
+        );
+    }
+
+    function loadCensusData() {
+        let censusDataPromise = new Promise(function(resolve, reject) {
+                        var censusDataUrl = "../getCensusData/{{chrom}}";
+                        d3.json(censusDataUrl, function(error, data) {
+                            if (error) {
+                                reject("Can't load data from " + censusDataUrl);
+                                return;
+                            }
+                            resolve(data);
+                        });
+                    });
+
+        censusDataPromise.then(
+            result => {gs.renderCensus(result); loadVariationData()},
             error => alert(error)
         );
     }

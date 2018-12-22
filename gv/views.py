@@ -1,6 +1,7 @@
 from django.shortcuts import HttpResponse, render
 from django.template import loader
 from . import genome as gn
+from . import census as cn
 import asyncio
 from concurrent.futures import ProcessPoolExecutor
 import pandas as pd
@@ -9,6 +10,7 @@ import numpy as np
 
 p = ProcessPoolExecutor(2)
 loop = asyncio.new_event_loop()
+census_file = 'file:///F:/RG/mtp/Resources/Census_all.csv'
 
 @asyncio.coroutine
 def split(genome):
@@ -105,6 +107,12 @@ def getCytoBand(request, chrom):
 def getVariationAllDetails(request, chrom):
     vcf = gn.VCF(gn.STANDARD_GENOME_PATH + "vcf.vcf")
     data = vcf.getVariationAllDetails(chrom)
+    return HttpResponse(data.to_json(orient='records'))
+    
+
+def getCensusData(request, chrom):
+    c = cn.Census(census_file)
+    data = c.getChromosomeCensusData(chrom[3:])
     return HttpResponse(data.to_json(orient='records'))
     
 
